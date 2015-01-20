@@ -1,0 +1,22 @@
+<head>
+  <title>Pik Pak</title>
+</head>
+
+<body>
+  <h1>Welcome to Pik Pak!</h1>
+
+  {{> hello}}
+</body>
+
+<template name="hello">
+  <button>Click Me and take a picture! </button>
+  <p>Current location: [{{position.lat}}, {{position.lng}}]</p>
+  <p><a href=''>Download the android app</a></p>
+  <p>Click picture to remove</p>
+
+  {{#each pictures}}
+  <div>
+  <img data-id={{_id}} class='small-image' src='{{pic}}'/><span><br/>Time: {{time}}</span> <span><br/>Location: [{{loc.lat}}, {{loc.lng}}]</span>
+  </div>
+  {{/each}}
+</template>
