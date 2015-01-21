@@ -11,3 +11,4 @@ coffeescript
 mdg:camera
 less
 mdg:geolocation
+jquery
