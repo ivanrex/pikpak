@@ -4,6 +4,7 @@
 
 <body>
   <h1>Pik Pak your life</h1>
+  <h2>  - Share your pictures ONLY to those nearby you!</h2>
 
   {{> hello}}
 </body>
@@ -11,10 +12,11 @@
 <template name="hello">
   <button>Click Me and take a picture! </button>
   <p><a href='https://drive.google.com/file/d/0B3DtCH2JqAfNSHNVUFM0Q3VJbU0/view?usp=sharing'>Download the android app</a></p>
-  <p>Current location: [{{pos.lat}}, {{pos.lng}}]</p>
-  <p>Current address: {{addr pos}}</p>
-  <p>You will only see the pictures shared near by you!</p>
-  <p>Click picture to remove</p>
+  <li>Current location: [{{pos.lat}}, {{pos.lng}}]</li>
+  <li>Current address: {{addr}}</li>
+  <li>Current zip: {{zip}}</li>
+
+  <h3>Click picture to remove</h3>
 
   {{#each pictures pos}}
   <div>
