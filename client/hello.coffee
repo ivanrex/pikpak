@@ -11,8 +11,10 @@ Template.hello.events
           if l
             url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng + GOOGLE_MAPS_API_KEY
             $.getJSON url, (res)->
-              a = res.results[0].formatted_address
-              myColl.insert {time:new Date(), pic:r, loc:l, addr:a}
+              if res.status is 'OK'
+                a = res.results[0].formatted_address
+                z = res.results[1].address_components[0].long_name
+              myColl.insert {time:new Date(), pic:r, loc:l, address:a, zip:z}
           uploadCount = (Session.get 'mycount') or 0
           uploadCount += 1
           Session.set 'mycount', uploadCount
@@ -27,14 +29,20 @@ Template.hello.events
         alert "You cannot delete more pictures than you uploaded (#{uploadCount} pictures)"
 
 Template.hello.helpers
-  pictures:->
-    myColl.find({}, {sort:{time:-1}})
   pos:->
-    p = Geolocation.latLng()
-    if p
-      url = GOOGLE_MAPS_API_URL + p.lat + ',' + p.lng + GOOGLE_MAPS_API_KEY
+    Geolocation.latLng()
+  pictures:(l)->
+    if l
+      url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng + GOOGLE_MAPS_API_KEY
+      zipCode = (Session.get 'zip') or ''
       $.getJSON url, (res)->
-        console.log res.results[0].formatted_address
-        text = '<p>Current address: ' + res.results[0].formatted_address + '</p>'
-        $('#address').html text
-    p
+        Session.set 'zip', res.results[1].address_components[0].long_name if res.status is 'OK'
+        return
+      myColl.find({zip: zipCode}, {sort:{time:-1}}) if zipCode
+  addr:(l)->
+    if l
+      url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng + GOOGLE_MAPS_API_KEY
+      $.getJSON url, (res)->
+        Session.set '_address', res.results[0].formatted_address if res.status is 'OK'
+        return
+      Session.get '_address'
