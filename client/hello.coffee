@@ -31,9 +31,8 @@ Template.hello.events
 Template.hello.helpers
   pos:->
     l = Geolocation.latLng()
-    console.log l
-    Session.set 'myloc', l
     if l
+      Session.set 'myloc', l
       url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng
       $.getJSON url, (res)->
         if res.status is 'OK'
@@ -41,6 +40,8 @@ Template.hello.helpers
           z = res.results[1].address_components[0].long_name
           Session.set 'myaddr', a
           Session.set 'myzip', z
+        else
+           console.log res
     Session.get 'myloc'
 
   addr:->
