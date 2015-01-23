@@ -1,6 +1,4 @@
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-#GOOGLE_MAPS_API_KEY = '&key=AIzaSyCs7eId7TLd46-tJH-9NeT4KMZHf2qOKzI'
-GOOGLE_MAPS_API_KEY = ''
 
 Template.hello.events
     'click button': ->
@@ -31,20 +29,20 @@ Template.hello.helpers
     console.log l
     Session.set 'myloc', l
     if l
-      url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng + GOOGLE_MAPS_API_KEY
+      url = GOOGLE_MAPS_API_URL + l.lat + ',' + l.lng
       $.getJSON url, (res)->
         if res.status is 'OK'
           a = res.results[0].formatted_address
           z = res.results[1].address_components[0].long_name
           Session.set 'myaddr', a
           Session.set 'myzip', z
-    return l
+    l
 
   addr:->
-    Session.get 'myaddr' 
+    Session.get 'myaddr'
 
   zip:->
-    Session.get 'myzip' 
+    Session.get 'myzip'
 
   pictures:->
     z = (Session.get 'myzip') or ''
