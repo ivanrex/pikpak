@@ -1,7 +1,12 @@
 GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
 
 Template.hello.events
-    'click button': ->
+    'click button.switch-mode': ->
+      m = (Session.get 'mymode') or 0
+      m = !m
+      Session.set 'mymode', m
+
+    'click button.take-a-pic': ->
       MeteorCamera.getPicture {}, (e,r)->
         if e?
           alert (e.message)
@@ -36,7 +41,7 @@ Template.hello.helpers
           z = res.results[1].address_components[0].long_name
           Session.set 'myaddr', a
           Session.set 'myzip', z
-    l
+    Session.get 'myloc'
 
   addr:->
     Session.get 'myaddr'
@@ -44,6 +49,18 @@ Template.hello.helpers
   zip:->
     Session.get 'myzip'
 
+  mode:->
+    m = Session.get 'mymode'
+    if m
+      return "local"
+    else
+      return "global"
+
   pictures:->
-    z = (Session.get 'myzip') or ''
-    myColl.find({zip: z}, {sort:{time:-1}}) if z
+    m = Session.get 'mymode'
+    if m # Global mode
+      return myColl.find({}, {sort:{time:-1}})
+    else # Local mode
+      z = (Session.get 'myzip') or ''
+      return myColl.find({zip: z}, {sort:{time:-1}}) if z
+

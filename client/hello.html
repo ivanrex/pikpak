@@ -10,7 +10,10 @@
 </body>
 
 <template name="hello">
-  <button>Click Me and take a picture! </button>
+  <div>
+    <button class='take-a-pic'>Take a picture</button>
+    <button class='switch-mode'>Switch to {{mode}} mode</button>
+  </div>
   <p><a href='https://drive.google.com/file/d/0B3DtCH2JqAfNSHNVUFM0Q3VJbU0/view?usp=sharing'>Download the android app</a></p>
   <li>Current location: [{{pos.lat}}, {{pos.lng}}]</li>
   <li>Current address: {{addr}}</li>
